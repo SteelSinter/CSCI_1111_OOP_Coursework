@@ -29,15 +29,18 @@ class Mod1ExamPart1 {
             months = input.nextInt();
             
             // Call method to populate value for savings
+            savings = savings(income, expense, months);
             // The call statement is worth 2 pts
             
             System.out.printf("After %d months you will have saved $%.2f", months, savings);
         }
 	
 	public static double savings(double in, double ex, double months) {
+		double savings = 0;
 		for (int i = 0; i < months; i++) {
-			
+			savings += in - ex;
 		}
+		return savings;
 	}
         
         // Create your method here

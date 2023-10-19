@@ -16,7 +16,6 @@ public class Exercise9_7 {
 		printAccountDetails(acc1);
 		printAccountDetails(acc2);
 		printAccountDetails(acc3);
-		
 
 	}
 	

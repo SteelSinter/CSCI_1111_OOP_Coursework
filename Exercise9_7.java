@@ -3,14 +3,30 @@ package exercises;
 public class Exercise9_7 {
 
 	public static void main(String[] args) {
-		Account acc1 = new Account(2, 1000);
+		Account defaultAccount = new Account();
+		Account acc1 = new Account(1, 1000);
+		Account acc2 = new Account(2, 7640.76);
+		Account acc3 = new Account(3, 645.66);
 		
-		System.out.println(acc1.getDateCreated());
+		defaultAccount.setAnnualInterestRate(0.7);
 		
-		acc1.setAnnualInterestRate(.7);
+		System.out.println("Account\t\t\t\tId\tBalance   \tAnnual%\tMonthly Interest");
 		
-		System.out.println(acc1.getMonthlyInterest());
+		printAccountDetails(defaultAccount);
+		printAccountDetails(acc1);
+		printAccountDetails(acc2);
+		printAccountDetails(acc3);
+		
 
+	}
+	
+	public static void printAccountDetails(Account acc) {
+		int id = acc.getId();
+		double balance = acc.getBalance();
+		double annualInterestRate = acc.getAnnualInterestRate();
+		double monthlyInterest = acc.getMonthlyInterest();
+		
+		System.out.printf("%s:\t%02d\t$%.2f   \t%04.2f%%\t$%.2f\r", acc, id, balance, annualInterestRate, monthlyInterest);
 	}
 
 }
@@ -29,7 +45,7 @@ class Account {
 		dateCreated = date.toString();
 	}
 	
-	Account(int id, int balance) {
+	Account(int id, double balance) {
 		this.id = id;
 		this.balance = balance;
 		dateCreated = date.toString();

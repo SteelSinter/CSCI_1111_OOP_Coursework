@@ -1,21 +1,28 @@
-package exercises;
+package objects;
 
 public class Exercise9_7 {
 
 	public static void main(String[] args) {
 		Account defaultAccount = new Account();
-		Account acc1 = new Account(1, 1000);
-		Account acc2 = new Account(2, 7640.76);
-		Account acc3 = new Account(3, 645.66);
+		Account acc1 = new Account(6431, 1000);
+		Account acc2 = new Account(2523, 7640.76);
+		Account acc3 = new Account(3833, 645.66);
+		Account acc4 = new Account(1122, 20_000);
 		
-		defaultAccount.setAnnualInterestRate(0.7);
+		defaultAccount.deposit(100);
+		defaultAccount.setAnnualInterestRate(6);
 		
-		System.out.println("Account\t\t\t\tId\tBalance   \tAnnual%\tMonthly Interest");
+		acc4.setAnnualInterestRate(4.5);
+		acc4.withdraw(2_500);
+		acc4.deposit(3_000);
+		
+		System.out.println("Id\tBalance \tMonthly Interest\tDate Created");
 		
 		printAccountDetails(defaultAccount);
 		printAccountDetails(acc1);
 		printAccountDetails(acc2);
 		printAccountDetails(acc3);
+		printAccountDetails(acc4);
 
 	}
 	
@@ -24,8 +31,9 @@ public class Exercise9_7 {
 		double balance = acc.getBalance();
 		double annualInterestRate = acc.getAnnualInterestRate();
 		double monthlyInterest = acc.getMonthlyInterest();
+		String dateCreated = acc.getDateCreated();
 		
-		System.out.printf("%s:\t%02d\t$%.2f   \t%04.2f%%\t$%.2f\r", acc, id, balance, annualInterestRate, monthlyInterest);
+		System.out.printf("%04d\t$%.2f \t$%.2f\t\t\t%s\r", id, balance, monthlyInterest, dateCreated);
 	}
 
 }
@@ -33,7 +41,7 @@ public class Exercise9_7 {
 class Account {
 	private int id;
 	private double balance;
-	private static double annualInterestRate;
+	private double annualInterestRate;
 	private String dateCreated;
 	
 	java.util.Date date = new java.util.Date();
@@ -42,12 +50,14 @@ class Account {
 		id = 0;
 		balance = 0;
 		dateCreated = date.toString();
+		annualInterestRate = 0;
 	}
 	
 	Account(int id, double balance) {
 		this.id = id;
 		this.balance = balance;
 		dateCreated = date.toString();
+		annualInterestRate = 0;
 	}
 	
 	int getId() {
@@ -70,8 +80,8 @@ class Account {
 		this.balance = balance;
 	}
 	
-	void setAnnualInterestRate(double annualInterestRate) {
-		Account.annualInterestRate = annualInterestRate;
+	void setAnnualInterestRate(double rate) {
+		annualInterestRate = rate;
 	}
 	
 	String getDateCreated() {
@@ -79,18 +89,18 @@ class Account {
 	}
 	
 	double getMonthlyInterestRate() {
-		return Account.annualInterestRate / 12.0;
+		return annualInterestRate / 12.0;
 	}
 	
 	double getMonthlyInterest() {
-		return this.balance * getMonthlyInterestRate();
+		return balance * getMonthlyInterestRate() / 100;
 	}
 	
 	void withdraw(double amount) {
-		this.balance -= amount;
+		balance -= amount;
 	}
 	
 	void deposit(double amount) {
-		this.balance += amount;
+		balance += amount;
 	}
 }

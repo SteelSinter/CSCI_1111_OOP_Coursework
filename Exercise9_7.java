@@ -3,38 +3,17 @@ package objects;
 public class Exercise9_7 {
 
 	public static void main(String[] args) {
-		Account defaultAccount = new Account();
-		Account acc1 = new Account(6431, 1000);
-		Account acc2 = new Account(2523, 7640.76);
-		Account acc3 = new Account(3833, 645.66);
-		Account acc4 = new Account(1122, 20_000);
+		Account acc = new Account(1122, 20_000);
 		
-		defaultAccount.deposit(100);
-		defaultAccount.setAnnualInterestRate(6);
-		
-		acc4.setAnnualInterestRate(4.5);
-		acc4.withdraw(2_500);
-		acc4.deposit(3_000);
+		acc.setAnnualInterestRate(4.5);
+		acc.withdraw(2_500);
+		acc.deposit(3_000);
 		
 		System.out.println("Id\tBalance \tMonthly Interest\tDate Created");
-		
-		printAccountDetails(defaultAccount);
-		printAccountDetails(acc1);
-		printAccountDetails(acc2);
-		printAccountDetails(acc3);
-		printAccountDetails(acc4);
+		acc.printDetails();
 
 	}
 	
-	public static void printAccountDetails(Account acc) {
-		int id = acc.getId();
-		double balance = acc.getBalance();
-		double annualInterestRate = acc.getAnnualInterestRate();
-		double monthlyInterest = acc.getMonthlyInterest();
-		String dateCreated = acc.getDateCreated();
-		
-		System.out.printf("%04d\t$%.2f \t$%.2f\t\t\t%s\r", id, balance, monthlyInterest, dateCreated);
-	}
 
 }
 
@@ -102,5 +81,9 @@ class Account {
 	
 	void deposit(double amount) {
 		balance += amount;
+	}
+	
+	void printDetails() {
+		System.out.printf("%04d\t$%.2f \t$%.2f\t\t\t%s\r", id, balance, getMonthlyInterest(), dateCreated);
 	}
 }

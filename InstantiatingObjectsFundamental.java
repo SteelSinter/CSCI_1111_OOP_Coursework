@@ -6,7 +6,9 @@ public class InstantiatingObjectsFundamental {
 		Rectangle rec1 = new Rectangle(4, 40);
 		Rectangle rec2 = new Rectangle(3.5, 35.9);
 		
+		System.out.println("Rectangle 1:");
 		rec1.print();
+		System.out.println("Rectangle 2:");
 		rec2.print();
 
 	}
@@ -36,6 +38,6 @@ class Rectangle {
 	}
 	
 	void print() {
-		System.out.printf("Width: %f\rHeight: %f\rArea: %f\rPerimeter: %f\r", width, height, getArea(), getPerimeter());
+		System.out.printf("Width: %.3f\rHeight: %.3f\rArea: %.3f\rPerimeter: %.3f\r", width, height, getArea(), getPerimeter());
 	}
 }

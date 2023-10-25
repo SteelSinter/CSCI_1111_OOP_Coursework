@@ -3,7 +3,13 @@ package objects;
 public class DesigningClassesFundamental {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+		char[] ch = {'1', '2', '6', '4', '7', '9'};
+		
+		MyInteger myInt = new MyInteger(5);
+		
+		int chint = myInt.parseInt(ch);
+		
+		System.out.println(chint);
 
 	}
 
@@ -97,11 +103,21 @@ class MyInteger {
 			return false;
 	}
 	
-	int parseInt(char[]) {
+	static int parseInt(char[] ch) {
+		int m = 1;
+		int result = 0;
+		int num;
+		for(int i = ch.length - 1; i > 0; i--) {
+			num = Math.abs(ch[i]) * m;
+			System.out.println(Math.abs(ch[i]));
+			m *= 10;
+			result += num;
+		}
 		
+		return result;
 	}
 	
-	int parseInt(String str) {
+	static int parseInt(String str) {
 		return Integer.parseInt(str);
 	}
 	

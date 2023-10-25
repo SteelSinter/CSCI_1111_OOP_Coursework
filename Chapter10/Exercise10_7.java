@@ -1,16 +1,56 @@
 package objects;
-import java.util.Scanner;
+import java.util.*;
 
 public class Exercise10_7 {
-	static String mainMenu = "";
-	static String menu = "Choose an option:\r1)View balance\r";
+	static String mainMenu = "Enter your id";
+	static String menu = "Choose an option:\r1) View balance\r2) Withdraw\r3) Deposit\r4) Exit";
 
 	public static void main(String[] args) {
-		String option;
-		do {
-			//print menu
-			option = input();
-		}while(!option.equalsIgnoreCase("4"));
+		int option, acc;
+		double balance, amount;
+		Account[] accounts;
+		
+		accounts = createAccounts();
+		
+		while(true) {
+			printPrompt(0);
+			acc = Integer.parseInt(input());
+			if(acc <= 10 && acc >= 0) {
+				do {
+					printPrompt(1);
+					Account account = accounts[acc];
+					option = Integer.parseInt(input());
+					balance = account.getBalance();
+					
+					switch(option) {
+					case 1:
+						System.out.println("------------------------");
+						System.out.printf("Current balance: $%.2f\n", balance);
+						System.out.println("------------------------");
+						break;
+					case 2:
+						System.out.println("Amount to withdraw: ");
+						amount = (double)(Double.parseDouble(input()));
+						account.withdraw(amount);
+						balance = account.getBalance();
+						System.out.println("---------------------------------------------------");
+						System.out.printf("$%.2f withdrawn from account. New balance: $%.2f\n", amount, balance);
+						System.out.println("---------------------------------------------------");
+						break;
+					case 3:
+						System.out.println("Amount to deposit: ");
+						amount = (double)(Double.parseDouble(input()));
+						account.deposit(amount);
+						balance = account.getBalance();
+						System.out.println("---------------------------------------------------");
+						System.out.printf("$%.2f deposited into account. New balance: $%.2f\n", amount, balance);
+						System.out.println("---------------------------------------------------");
+						break;
+					}
+				}while(!(option == 4));
+			}
+			
+		}
 
 	}
 	
@@ -20,6 +60,26 @@ public class Exercise10_7 {
 		return str;
 	}
 	
+	public static void printPrompt(int p) {
+		switch(p) {
+		case 0:
+			System.out.println(mainMenu);
+			break;
+		case 1:
+			System.out.println(menu);
+			break;
+		}
+	}
+	
+	public static Account[] createAccounts() {
+		Account[] accounts = new Account[10];
+		
+		for(int i = 0; i < 10; i++) {
+			accounts[i] = new Account(i, 100);
+		}
+		
+		return accounts;
+	}
 
 }
 

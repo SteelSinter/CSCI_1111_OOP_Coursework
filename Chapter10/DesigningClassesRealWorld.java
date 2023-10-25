@@ -6,11 +6,14 @@ public class DesigningClassesRealWorld {
 		char[] ch = {'1', '2', '6', '4', '7', '9'};
 		
 		MyInteger myInt = new MyInteger(5);
+		MyInteger myInt1 = new MyInteger(8);
 		
 		int chAsInt = myInt.parseInt(ch);
 		
-		System.out.println(chAsInt);
-		System.out.println(myInt.value);
+		System.out.println("char[] as int: " + chAsInt);
+		
+		myInt.printInfo();
+		myInt1.printInfo();
 
 	}
 
@@ -112,6 +115,10 @@ class MyInteger {
 	
 	static int parseInt(String str) {
 		return Integer.parseInt(str);
+	}
+	
+	void printInfo() {
+		System.out.printf("Value: %d\risEven: %b\risOdd: %b\risPrime: %b\requals 5: %b\r", getInt(), isEven(), isOdd(), isPrime(), equals(5));
 	}
 	
 }

@@ -49,6 +49,8 @@ public class Exercise10_7 {
 					}
 				}while(!(option == 4));
 			}
+			else
+				System.out.println("Enter a valid id.");
 			
 		}
 

@@ -161,7 +161,7 @@ class Account {
 	}
 	
 	public String getType() {
-		return "Account";
+		return "Default";
 	}
 	
 	@Override

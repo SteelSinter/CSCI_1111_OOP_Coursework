@@ -12,6 +12,7 @@ public class PolymorphismRealWorld {
 		Account acc = new Account(8212, 1000);
 		CheckingAccount cAcc = new CheckingAccount(8273, 500, 300);
 		SavingsAccount sAcc = new SavingsAccount(7283, 3000);
+		
 		System.out.println(acc.toString());
 		System.out.println(cAcc.toString());
 		System.out.println(sAcc.toString());

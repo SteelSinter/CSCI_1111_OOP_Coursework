@@ -4,56 +4,59 @@ import java.util.*;
 public class Exercise10_7 {
 	static String mainMenu = "Enter your id";
 	static String menu = "Choose an option:\r1) View balance\r2) Withdraw\r3) Deposit\r4) Exit";
+	static int option, acc;
+	static double balance, amount;
+	static Account[] accounts;
 
 	public static void main(String[] args) {
-		int option, acc;
-		double balance, amount;
-		Account[] accounts;
-		
 		accounts = createAccounts();
 		
 		while(true) {
 			printPrompt(0);
 			acc = Integer.parseInt(input());
 			if(acc <= 10 && acc >= 0) {
-				do {
-					printPrompt(1);
-					Account account = accounts[acc];
-					option = Integer.parseInt(input());
-					balance = account.getBalance();
-					
-					switch(option) {
-					case 1:
-						System.out.println("------------------------");
-						System.out.printf("Current balance: $%.2f\n", balance);
-						System.out.println("------------------------");
-						break;
-					case 2:
-						System.out.println("Amount to withdraw: ");
-						amount = (double)(Double.parseDouble(input()));
-						account.withdraw(amount);
-						balance = account.getBalance();
-						System.out.println("---------------------------------------------------");
-						System.out.printf("$%.2f withdrawn from account. New balance: $%.2f\n", amount, balance);
-						System.out.println("---------------------------------------------------");
-						break;
-					case 3:
-						System.out.println("Amount to deposit: ");
-						amount = (double)(Double.parseDouble(input()));
-						account.deposit(amount);
-						balance = account.getBalance();
-						System.out.println("---------------------------------------------------");
-						System.out.printf("$%.2f deposited into account. New balance: $%.2f\n", amount, balance);
-						System.out.println("---------------------------------------------------");
-						break;
-					}
-				}while(!(option == 4));
+				menu();
 			}
 			else
 				System.out.println("Enter a valid id.");
 			
 		}
 
+	}
+	
+	public static void menu() {
+		do {
+			printPrompt(1);
+			Account account = accounts[acc];
+			option = Integer.parseInt(input());
+			balance = account.getBalance();
+			
+			switch(option) {
+			case 1:
+				System.out.println("------------------------");
+				System.out.printf("Current balance: $%.2f\n", balance);
+				System.out.println("------------------------");
+				break;
+			case 2:
+				System.out.println("Amount to withdraw: ");
+				amount = (double)(Double.parseDouble(input()));
+				account.withdraw(amount);
+				balance = account.getBalance();
+				System.out.println("---------------------------------------------------");
+				System.out.printf("$%.2f withdrawn from account. New balance: $%.2f\n", amount, balance);
+				System.out.println("---------------------------------------------------");
+				break;
+			case 3:
+				System.out.println("Amount to deposit: ");
+				amount = (double)(Double.parseDouble(input()));
+				account.deposit(amount);
+				balance = account.getBalance();
+				System.out.println("---------------------------------------------------");
+				System.out.printf("$%.2f deposited into account. New balance: $%.2f\n", amount, balance);
+				System.out.println("---------------------------------------------------");
+				break;
+			}
+		}while(!(option == 4));
 	}
 	
 	public static String input() {
@@ -143,15 +146,76 @@ class Account {
 		return balance * getMonthlyInterestRate() / 100;
 	}
 	
-	void withdraw(double amount) {
+	public void withdraw(double amount) {
 		balance -= amount;
 	}
 	
-	void deposit(double amount) {
+	public void deposit(double amount) {
 		balance += amount;
 	}
 	
-	void printDetails() {
-		System.out.printf("%04d\t$%.2f \t$%.2f\t\t\t%s\r", id, balance, getMonthlyInterest(), dateCreated);
+	public String getType() {
+		return "Account";
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Id: %2d Balance: $%.2f Monthly Interest: %04.2%% Date Created: %s", getId(), getBalance(), getMonthlyInterest(), getDateCreated());
+	}
+}
+
+class CheckingAccount extends Account {
+	private double overdraftLimit;
+	
+	public CheckingAccount() {
+		overdraftLimit = 200;
+	}
+	
+	public CheckingAccount(double overdraftLimit) {
+		this.overdraftLimit = overdraftLimit;
+	}
+	
+	public void setOverdraftLimit(double limit) {
+		overdraftLimit = limit;
+	}
+	
+	public double getOverdraftLimit() {
+		return overdraftLimit;
+	}
+	
+	@Override
+	public void withdraw(double amount) {
+		double bal = getBalance();
+		if(amount <= bal + overdraftLimit)
+			bal -= amount;
+	}
+	
+	@Override
+	public String getType() {
+		return "Checking";
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Id: %2d Type: %s Balance: $%.2f Monthly Interest: %04.2%% Date Created: %s", getId(), getType(), getBalance(), getMonthlyInterest(), getDateCreated());
+	}
+}
+
+class SavingsAccount extends Account {
+	@Override
+	public void withdraw(double amount) {
+		double bal = getBalance();
+		if(amount <= bal)
+			bal -= amount;
+	}
+	
+	@Override
+	public String getType() {
+		return "Savings";
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("Id: %2d Type: %s Balance: $%.2f Monthly Interest: %04.2%% Date Created: %s", getId(), getType(), getBalance(), getMonthlyInterest(), getDateCreated());
 	}
 }

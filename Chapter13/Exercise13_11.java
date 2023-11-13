@@ -1,5 +1,4 @@
 package thing;
-import java.util.Scanner;
 
 public class Exercise13_11 {
 

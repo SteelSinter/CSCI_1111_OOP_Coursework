@@ -69,8 +69,10 @@ public class MainClass {
 			case "4":
 				for (Transaction t: currentUser.getTransactions()) {
 					System.out.println(t.toString());
-					System.out.println("fjdshhdsfs");
 				}
+				do {
+					System.out.println("Return?");
+				}while (!yesNoPrompt());
 				break;
 			case "5":
 				for (Account a: currentUser.getAccounts()) {

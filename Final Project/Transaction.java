@@ -38,6 +38,12 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
+		if (to == null) {
+			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", "Withdraw", from.getName(), amount, status, note, dateCreated);
+		}
+		if (from == null) {
+			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", to, "Deposit", amount, status, note, dateCreated);
+		}
 		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", to.getName(), from.getName(), amount, status, note, dateCreated);
 	}
 

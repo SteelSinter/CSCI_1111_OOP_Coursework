@@ -110,31 +110,32 @@ public class User {
 	
 	public void deposit() {
 		String option;
+		String note = null;
 		double amount = 0;
-		Account acc;
+		Account acc = null;
 		boolean confirm = false;
+		int i;
 		do {
 			try {
 				System.out.println("Enter amount to deposit: ");
 				amount = input.nextDouble();
 				input.nextLine();
 				System.out.println("Which account would you like to deposit into?");
-				for (int i = 0; i < getAccounts().size(); i++) {
+				for (i = 0; i < getAccounts().size(); i++) {
 					System.out.println(i + ") " + getAccounts().get(i).getName());
 				}
 				acc = getAccounts().get(input.nextInt());
 				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
 				confirm = yesNoPrompt();
 			}
-			catch (NumberFormatException e) {
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
 				System.out.println("Invalid input.");
-			}
-			catch (InputMismatchException e) {
-				System.out.println("Invalid amount.");
 				input.nextLine();
 			}
 			if (confirm)
-				getTransactions().add(new Transaction())
+				getTransactions().add(new Transaction(acc, null, amount, note));
 				break;
 		}while(!confirm);
 	}

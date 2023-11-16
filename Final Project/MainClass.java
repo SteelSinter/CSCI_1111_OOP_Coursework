@@ -67,7 +67,10 @@ public class MainClass {
 				//Transfer
 				break;
 			case "4":
-				// transaction history
+				for (Transaction t: currentUser.getTransactions()) {
+					System.out.println(t.toString());
+					System.out.println("fjdshhdsfs");
+				}
 				break;
 			case "5":
 				for (Account a: currentUser.getAccounts()) {

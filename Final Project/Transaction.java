@@ -20,6 +20,22 @@ public class Transaction {
 		status = "pending";
 	}
 	
+	/**
+	 * Creates a transaction.
+	 * @param to Account to receive the payment.
+	 * @param from Account to send the payment.
+	 * @param amount Amount to pay.
+	 * @param note Additional notes.
+	 */
+	public Transaction(Account to, Account from, double amount, String note) {
+		this.to = to;
+		this.from = from;
+		this.amount = Math.abs(amount);
+		this.note = note;
+		dateCreated = date.toString();
+		status = "pending";
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", to.getName(), from.getName(), amount, status, note, dateCreated);

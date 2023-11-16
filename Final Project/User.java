@@ -9,6 +9,7 @@ public class User {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
 	private static ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<Account> accounts = new ArrayList<Account>();
+	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	private String first, last, dateCreated, dob;
 	private short pin;
 	private int id;
@@ -80,6 +81,10 @@ public class User {
 		return accounts;
 	}
 	
+	public ArrayList<Transaction> getTransactions() {
+		return transactions;
+	}
+	
 	public static ArrayList<User> getUsers() {
 		return users;
 	}
@@ -128,6 +133,9 @@ public class User {
 				System.out.println("Invalid amount.");
 				input.nextLine();
 			}
+			if (confirm)
+				getTransactions().add(new Transaction())
+				break;
 		}while(!confirm);
 	}
 	

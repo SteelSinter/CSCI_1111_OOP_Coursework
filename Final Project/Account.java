@@ -5,7 +5,7 @@ public class Account {
 	private int id;
 	private User owner;
 	private double balance;
-	private String dateCreated;
+	private String dateCreated, name;
 	public static ArrayList<Account> accounts = new ArrayList<Account>();
 	
 	Date date = new Date();
@@ -18,21 +18,31 @@ public class Account {
 		owner = User.users.get(0);
 		balance = 0;
 		dateCreated = date.toString();
+		name = "DEFAULT ACCOUNT";
 	}
 	
-	public Account(User owner) {
+	public Account(User owner, String name) {
 		this.owner = owner;
 		id = accounts.size();
 		balance = 0;
 		dateCreated = date.toString();
+		this.name = name;
 	}
 	
 	public void setBalance(double bal) {
 		balance = bal;
 	}
 	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
 	public double getBalance() {
 		return balance;
+	}
+	
+	public User getOwner() {
+		return owner;
 	}
 	
 	@Override

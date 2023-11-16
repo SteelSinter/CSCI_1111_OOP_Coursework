@@ -7,7 +7,7 @@ public class MainClass {
 		String option;
 		
 		do {
-			prompt(0);
+			prompt(1);
 			option = input();
 			
 			if (option.equalsIgnoreCase("new")) {
@@ -15,20 +15,56 @@ public class MainClass {
 				System.out.println("create account");
 			}
 			else {
-				// sign into account
-				System.out.println("sing in");
+				try {
+					mainMenu(Short.parseShort(option));
+				}
+				catch (NumberFormatException e) {
+					prompt(0);
+				}
 			}
 				
 		}while (!option.equalsIgnoreCase("exit"));
 
 	}
 	
+	public static void mainMenu(short pin) {
+		String option = "";
+		User currentUser = null;
+		
+		for (User u: User.users) {
+			if (pin == u.getPin()) {
+				currentUser = u;
+				break;
+			}
+		}
+		
+		if (currentUser == null) {
+			option = "exit";
+			System.out.println("User not found.");
+		}
+		
+		while (!option.equalsIgnoreCase("exit")) {
+			option = input();
+			
+			switch (option) {
+			case "0":
+				//
+				break;
+			default:
+				System.out.println("Invalid option.");
+			}
+			
+		}
+		
+	}
+	
 	public static void prompt(int p) {
 		switch (p) {
 		case 0:
-			System.out.println("Enter pin or 'new' to create a new user.");
+			System.out.println("Invalid number.");
 			break;
 		case 1:
+			System.out.println("Enter pin or 'new' to create a new user.");
 			break;
 		default:
 			System.out.println("Invalid");
@@ -36,14 +72,8 @@ public class MainClass {
 	}
 	
 	public static String input() {
-		String in;
-		try (Scanner input = new Scanner(System.in);) {
-			in = input.next();
-			return in;
-		}
-		catch (NoSuchElementException e) {
-			return "";
-		}
+		Scanner input = new Scanner(System.in);
+		return input.next();
 	}
 
 }

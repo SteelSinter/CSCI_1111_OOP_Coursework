@@ -6,6 +6,8 @@ public class MainClass {
 		User user = new User();
 		
 		System.out.println(user.toString());
+		
+		Account account = new Account();
 
 	}
 

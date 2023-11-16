@@ -1,13 +1,13 @@
 package bank;
 import java.util.*;
 /**
- * Stores the date for a user.
+ * Stores the data for a user.
  * @author James Jesus
  *
  */
 public class User {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
-	private static int totalUsers = 0;
+	public static ArrayList<User> users = new ArrayList<User>();
 	private String first, last, dateCreated, dob;
 	private short pin;
 	private int id;
@@ -23,9 +23,9 @@ public class User {
 		dateCreated = date.toString();
 		dob = "00/00/0000";
 		pin = (short)0000;
-		id = totalUsers;
+		id = users.size();
 		userPins.add(id, (short)0000);
-		totalUsers++;
+		users.add(id, this);
 	}
 	/**
 	 * Create a user with first and last name, date of birth, and pin.
@@ -40,9 +40,8 @@ public class User {
 		dateCreated = date.toString();
 		this.dob = dateOfBirth;
 		this.pin = pin;
-		id = totalUsers;
+		id = users.size();
 		userPins.add(id, pin);
-		totalUsers++;
 	}
 	
 	public void setDateOfBirth(String dateOfBirth) {

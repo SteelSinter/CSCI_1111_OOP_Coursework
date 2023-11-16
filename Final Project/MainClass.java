@@ -54,7 +54,7 @@ public class MainClass {
 			
 			switch (option) {
 			case "0":
-				// Deposit
+				currentUser.deposit();//not done
 				break;
 			case "1":
 				// Withdraw
@@ -69,6 +69,11 @@ public class MainClass {
 				// transaction history
 				break;
 			case "5":
+				for (Account a: currentUser.getAccounts()) {
+					System.out.println(a.toString());
+				}
+				break;
+			case "6":
 				option = "exit";
 				break;
 			default:
@@ -93,7 +98,8 @@ public class MainClass {
 				+ "2) Make payment\r"
 				+ "3) Transfer money\r"
 				+ "4) View transaction history\r"
-				+ "5) sign out");
+				+ "5) View accounts\r"
+				+ "6) Sign out");
 			break;
 		default:
 			System.out.println("Invalid");
@@ -107,7 +113,6 @@ public class MainClass {
 	
 	public static void createDefaults() {
 		User.users.add(new User());
-		Account.accounts.add(new Account());
 	}
 
 }

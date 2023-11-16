@@ -58,3 +58,13 @@ public class Account {
 class SavingsAccount extends Account {
 	private double monthlyInterestRate;
 }
+
+class CheckingAccount extends Account {
+	private CheckingAccount() {
+		
+	}
+	
+	public CheckingAccount(User owner, String name) {
+		super(owner, name);
+	}
+}

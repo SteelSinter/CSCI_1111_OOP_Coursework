@@ -8,10 +8,12 @@ import java.util.*;
 public class User {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
 	public static ArrayList<User> users = new ArrayList<User>();
+	private ArrayList<Account> accounts = new ArrayList<Account>();
 	private String first, last, dateCreated, dob;
 	private short pin;
 	private int id;
 	
+	static Scanner input = new Scanner(System.in);
 	Date date = new Date();
 	
 	/**
@@ -72,6 +74,70 @@ public class User {
 	
 	public String getDateOfBirth() {
 		return dob;
+	}
+	
+	public ArrayList<Account> getAccounts() {
+		return accounts;
+	}
+	
+	public void createAccount() {
+		String option;
+		do {
+			System.out.println("Account type: ");
+			System.out.println("0) checking");
+			System.out.println("1) savings");
+			option = input.next();
+			
+			switch (option) {
+			case "0":
+				getAccounts().add(new CheckingAccount(this, "SAVINGS"));
+				break;
+			case "1":
+				// savings
+				break;
+			}
+		}while (!option.equalsIgnoreCase("exit"));
+	}
+	
+	public void deposit() {
+		String option;
+		double amount = 0;
+		Account acc;
+		boolean confirm = false;
+		do {
+			try {
+				System.out.println("Enter amount to deposit: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				System.out.println("Which account would you like to deposit into?");
+				for (int i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException e) {
+				System.out.println("Invalid input.");
+			}
+			catch (InputMismatchException e) {
+				System.out.println("Invalid amount.");
+				input.nextLine();
+			}
+		}while(!confirm);
+	}
+	
+	public static boolean yesNoPrompt() {
+		String option;
+		do {
+			System.out.println("Y/N?");
+			option = input.next();
+		}while (!(option.equalsIgnoreCase("y") || option.equalsIgnoreCase("n")));
+		
+		if (option.equalsIgnoreCase("y"))
+			return true;
+		
+		return false;
 	}
 	
 	@Override

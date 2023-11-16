@@ -15,7 +15,7 @@ public class Account {
 	 */
 	public Account() {
 		id = 0000;
-		owner = User.users.get(0);
+		owner = User.getUsers().get(0);
 		balance = 0;
 		dateCreated = date.toString();
 		name = "DEFAULT ACCOUNT";
@@ -51,12 +51,20 @@ public class Account {
 	
 	@Override
 	public String toString() {
-		return String.format("Id: %03d\tOwner:%s\tBalance$%.2f\tCreated on %s", id, owner, balance, dateCreated);
+		return String.format("Id: %03d\tName: %s\tOwner: %s\tBalance: $%.2f\tCreated on %s", id, name, owner.getName(), balance, dateCreated);
 	}
 }
 
 class SavingsAccount extends Account {
 	private double monthlyInterestRate;
+	
+	private SavingsAccount() {
+		
+	}
+	
+	public SavingsAccount(User owner, String name) {
+		super(owner, name);
+	}
 }
 
 class CheckingAccount extends Account {

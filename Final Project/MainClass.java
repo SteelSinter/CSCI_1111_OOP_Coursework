@@ -2,6 +2,7 @@ package bank;
 import java.util.*;
 
 public class MainClass {
+	public static Scanner input = new Scanner(System.in);
 
 	public static void main(String[] args) {
 		String option;
@@ -36,7 +37,7 @@ public class MainClass {
 		String option = "";
 		User currentUser = null;
 		
-		for (User u: User.users) {
+		for (User u: User.getUsers()) {
 			if (pin == u.getPin()) {
 				currentUser = u;
 				break;
@@ -72,6 +73,9 @@ public class MainClass {
 				for (Account a: currentUser.getAccounts()) {
 					System.out.println(a.toString());
 				}
+				do {
+					System.out.println("Return?");
+				}while (!yesNoPrompt());
 				break;
 			case "6":
 				option = "exit";
@@ -107,12 +111,26 @@ public class MainClass {
 	}
 	
 	public static String input() {
-		Scanner input = new Scanner(System.in);
 		return input.next();
 	}
 	
+	public static boolean yesNoPrompt() {
+		Scanner input = new Scanner(System.in);
+		String option;
+		do {
+			System.out.println("Y/N?");
+			option = input.next();
+		}while (!(option.equalsIgnoreCase("y") || option.equalsIgnoreCase("n")));
+		
+		if (option.equalsIgnoreCase("y"))
+			return true;
+		
+		return false;
+	}
+	
 	public static void createDefaults() {
-		User.users.add(new User());
+		User.getUsers().add(new User());
+		User.getUsers().get(0).getAccounts().add(new Account());
 	}
 
 }

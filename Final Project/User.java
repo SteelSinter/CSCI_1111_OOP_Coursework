@@ -7,7 +7,7 @@ import java.util.*;
  */
 public class User {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
-	public static ArrayList<User> users = new ArrayList<User>();
+	private static ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<Account> accounts = new ArrayList<Account>();
 	private String first, last, dateCreated, dob;
 	private short pin;
@@ -50,7 +50,7 @@ public class User {
 		dob = dateOfBirth;
 	}
 	
-	public void setUserName(String first, String last) {
+	public void setName(String first, String last) {
 		this.first = first;
 		this.last = last;
 	}
@@ -80,6 +80,10 @@ public class User {
 		return accounts;
 	}
 	
+	public static ArrayList<User> getUsers() {
+		return users;
+	}
+	
 	public void createAccount() {
 		String option;
 		do {
@@ -90,10 +94,10 @@ public class User {
 			
 			switch (option) {
 			case "0":
-				getAccounts().add(new CheckingAccount(this, "SAVINGS"));
+				getAccounts().add(new CheckingAccount(this, "CHECKING"));
 				break;
 			case "1":
-				// savings
+				getAccounts().add(new SavingsAccount(this, "SAVINGS"));
 				break;
 			}
 		}while (!option.equalsIgnoreCase("exit"));

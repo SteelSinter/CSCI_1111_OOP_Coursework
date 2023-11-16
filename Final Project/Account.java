@@ -41,6 +41,10 @@ public class Account {
 		return balance;
 	}
 	
+	public String getName() {
+		return name;
+	}
+	
 	public User getOwner() {
 		return owner;
 	}

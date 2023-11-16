@@ -10,8 +10,16 @@ public class MainClass {
 			prompt(0);
 			option = input();
 			
-			if option.equ
-		}
+			if (option.equalsIgnoreCase("new")) {
+				// create new account
+				System.out.println("create account");
+			}
+			else {
+				// sign into account
+				System.out.println("sing in");
+			}
+				
+		}while (!option.equalsIgnoreCase("exit"));
 
 	}
 	
@@ -22,12 +30,19 @@ public class MainClass {
 			break;
 		case 1:
 			break;
+		default:
+			System.out.println("Invalid");
 		}
 	}
 	
 	public static String input() {
+		String in;
 		try (Scanner input = new Scanner(System.in);) {
-			return input.next();
+			in = input.next();
+			return in;
+		}
+		catch (NoSuchElementException e) {
+			return "";
 		}
 	}
 

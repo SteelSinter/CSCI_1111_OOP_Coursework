@@ -22,7 +22,7 @@ public class Transaction {
 	
 	@Override
 	public String toString() {
-		return String.format("TO: \tFROM: \tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", to.);
+		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tNOTE: %s\t CREATED: %s", to.getName(), from.getName(), amount, status, note, dateCreated);
 	}
 
 }

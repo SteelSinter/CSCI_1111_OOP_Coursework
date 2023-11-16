@@ -66,6 +66,10 @@ public class User {
 		return id;
 	}
 	
+	public String getName() {
+		return first + " " + last;
+	}
+	
 	public String getDateOfBirth() {
 		return dob;
 	}

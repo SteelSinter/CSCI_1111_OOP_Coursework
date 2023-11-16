@@ -6,6 +6,8 @@ public class MainClass {
 	public static void main(String[] args) {
 		String option;
 		
+		createDefaults();
+		
 		do {
 			prompt(1);
 			option = input();
@@ -13,6 +15,9 @@ public class MainClass {
 			if (option.equalsIgnoreCase("new")) {
 				// create new account
 				System.out.println("create account");
+			}
+			else if (!(option.length() == 4)) {
+				prompt(0);
 			}
 			else {
 				try {
@@ -44,11 +49,27 @@ public class MainClass {
 		}
 		
 		while (!option.equalsIgnoreCase("exit")) {
+			prompt(2);
 			option = input();
 			
 			switch (option) {
 			case "0":
-				//
+				// Deposit
+				break;
+			case "1":
+				// Withdraw
+				break;
+			case "2":
+				// Make payment
+				break;
+			case "3":
+				//Transfer
+				break;
+			case "4":
+				// transaction history
+				break;
+			case "5":
+				option = "exit";
 				break;
 			default:
 				System.out.println("Invalid option.");
@@ -66,6 +87,14 @@ public class MainClass {
 		case 1:
 			System.out.println("Enter pin or 'new' to create a new user.");
 			break;
+		case 2: System.out.println(
+				"0) Deposit\r"
+				+ "1) Withdraw\r"
+				+ "2) Make payment\r"
+				+ "3) Transfer money\r"
+				+ "4) View transaction history\r"
+				+ "5) sign out");
+			break;
 		default:
 			System.out.println("Invalid");
 		}
@@ -74,6 +103,11 @@ public class MainClass {
 	public static String input() {
 		Scanner input = new Scanner(System.in);
 		return input.next();
+	}
+	
+	public static void createDefaults() {
+		User.users.add(new User());
+		Account.accounts.add(new Account());
 	}
 
 }

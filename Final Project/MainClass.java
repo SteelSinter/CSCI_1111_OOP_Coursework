@@ -187,7 +187,9 @@ public class MainClass {
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("File not found.");
-		}	
+		}
+
+		
 	}
 	
 	public static void load() throws IOException{
@@ -203,12 +205,6 @@ public class MainClass {
 			while (read.hasNext()) {
 				fileContents = fileContents.concat(read.next());
 			}
-		try (Scanner read = new Scanner(file);
-		) {
-			while (read.hasNext()) {
-				fileContents = fileContents.concat(read.next());
-			}
-			
 			System.out.println(fileContents);
 		}
 		catch (FileNotFoundException e) {

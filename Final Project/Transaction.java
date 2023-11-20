@@ -51,7 +51,7 @@ public class Transaction implements SavesData{
 	public String getStatus() {
 		return status;
 	}
-
+	
 	public void setStatus(String s) {
 		status = s;
 	}
@@ -100,30 +100,6 @@ public class Transaction implements SavesData{
 		
 		accept();
 		return;
-		
-	}
-	
-	public void deny(String reason) {
-		setStatus("Denied. Reason: " + reason);
-	}
-	
-	public void accept() {
-		from.withdraw(amount);
-		to.deposit(amount);
-		setStatus("Accepted.");
-	}
-	
-	public void validate() {
-		if (!(from instanceof canMakePayment)) {
-			deny("Savings account cannot make payment.");
-			return;
-		}
-		if (!(from.getBalance() >= getAmount())) {
-			deny("Sender has insufficient funds.");
-			return;
-		}
-		
-		accept();
 		
 	}
 

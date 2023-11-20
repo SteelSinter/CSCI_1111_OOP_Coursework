@@ -37,9 +37,7 @@ public class User {
 	 * @param dateOfBirth Date of birth in MM/DD/YYYY format.
 	 * @param pin Pin number for the account.
 	 */
-	public User(String first, String last, String dateOfBirth, short pin) {
-		this.first = first;
-		this.last = last;
+	public User(String dateOfBirth, short pin) {
 		dateCreated = date.toString();
 		this.dob = dateOfBirth;
 		this.pin = pin;
@@ -100,19 +98,24 @@ public class User {
 			System.out.println("Enter first and last name: ");
 			firstAndLast = input.nextLine();
 			System.out.println("Enter date of birth with forward slashes(MM/DD/YYYY): ");
-			dateOfBirth = input.next();
+			dateOfBirth = input.nextLine();
 			option = dateOfBirth;
 			System.out.println("Choose a 4-digit pin: ");
-			option = input.next();
 			while (pin == 0) {
 				try {
-					pin = Integer.parseInt(option);
+					pin = (int)input.nextByte();
 				}
 				catch (NumberFormatException e) {
 					System.out.println("Invalid number");
-					String s = input.nextLine();
+					input.nextLine();
 					pin = 0;
 					break;
+				}
+				catch (InputMismatchException e) {
+					System.out.println("Invalid number");
+					input.nextLine();
+					pin = 0;
+					continue;
 				}
 				for (Short s: User.getUserPins()) {
 					if (s == pin) {
@@ -123,17 +126,25 @@ public class User {
 				}
 				if (String.format("%04d", pin).length() != 4) {
 					System.out.println("Pin must be 4 digits");
-					input.nextLine();
 					pin = 0;
 					continue;
 				}
 				
 			}
 			input.nextLine();
-			String first = firstAndLast.substring(0, firstAndLast.indexOf(" "));
-			String last = firstAndLast.substring(firstAndLast.indexOf(" "), firstAndLast.length() - 1);
-			User.getUsers().add(new User(first, last, dateOfBirth, (short)pin));
-			System.out.println("Account created.");
+			User newUser = new User(dateOfBirth, (short)pin);
+			String[] firstLast = firstAndLast.split(" ");
+			if (firstLast.length == 2) {
+				newUser.setName(firstLast[0], firstLast[1]);
+			}
+			else {
+				newUser.setName(firstAndLast, firstAndLast);
+			}
+			if (User.getUsers().add(newUser)) {
+				System.out.println("Account created.");
+			}
+			else
+				System.out.println("One or more inputs were invalid. Account not created. Try again.");
 			break;
 		}while (!option.equalsIgnoreCase("exit"));
 	}

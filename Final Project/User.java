@@ -7,11 +7,14 @@ import java.util.*;
  */
 public class User {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
-	public static ArrayList<User> users = new ArrayList<User>();
+	private static ArrayList<User> users = new ArrayList<User>();
+	private ArrayList<Account> accounts = new ArrayList<Account>();
+	private ArrayList<Transaction> transactions = new ArrayList<Transaction>();
 	private String first, last, dateCreated, dob;
 	private short pin;
 	private int id;
 	
+	static Scanner input = new Scanner(System.in);
 	Date date = new Date();
 	
 	/**
@@ -40,7 +43,7 @@ public class User {
 		dateCreated = date.toString();
 		this.dob = dateOfBirth;
 		this.pin = pin;
-		id = users.size();
+		id = users.size() - 1;
 		userPins.add(id, pin);
 	}
 	
@@ -48,7 +51,7 @@ public class User {
 		dob = dateOfBirth;
 	}
 	
-	public void setUserName(String first, String last) {
+	public void setName(String first, String last) {
 		this.first = first;
 		this.last = last;
 	}
@@ -72,6 +75,135 @@ public class User {
 	
 	public String getDateOfBirth() {
 		return dob;
+	}
+	
+	public ArrayList<Account> getAccounts() {
+		return accounts;
+	}
+	
+	public ArrayList<Transaction> getTransactions() {
+		return transactions;
+	}
+	
+	public static ArrayList<User> getUsers() {
+		return users;
+	}
+	
+	public static ArrayList<Short> getUserPins() {
+		return userPins;
+	}
+	
+	public static void createUser() {
+		String option, firstAndLast, dateOfBirth;
+		int pin = 0;
+		do {
+			System.out.println("Enter first and last name: ");
+			firstAndLast = input.nextLine();
+			System.out.println("Enter date of birth with forward slashes(MM/DD/YYYY): ");
+			dateOfBirth = input.next();
+			option = dateOfBirth;
+			System.out.println("Choose a 4-digit pin: ");
+			option = input.next();
+			while (pin == 0) {
+				try {
+					pin = Integer.parseInt(option);
+				}
+				catch (NumberFormatException e) {
+					System.out.println("Invalid number");
+					String s = input.nextLine();
+					pin = 0;
+					break;
+				}
+				for (Short s: User.getUserPins()) {
+					if (s == pin) {
+						System.out.println("Pin already taken.");
+						pin = 0;
+						continue;
+					}
+				}
+				if (String.format("%04d", pin).length() != 4) {
+					System.out.println("Pin must be 4 digits");
+					input.nextLine();
+					pin = 0;
+					continue;
+				}
+				
+			}
+			input.nextLine();
+			String first = firstAndLast.substring(0, firstAndLast.indexOf(" "));
+			String last = firstAndLast.substring(firstAndLast.indexOf(" "), firstAndLast.length() - 1);
+			User.getUsers().add(new User(first, last, dateOfBirth, (short)pin));
+			System.out.println("Account created.");
+			break;
+		}while (!option.equalsIgnoreCase("exit"));
+	}
+	
+	public void createAccount() {
+		String option;
+		do {
+			System.out.println("Account type: ");
+			System.out.println("0) checking");
+			System.out.println("1) savings");
+			option = input.next();
+			
+			switch (option) {
+			case "0":
+				getAccounts().add(new CheckingAccount(this, "CHECKING"));
+				break;
+			case "1":
+				getAccounts().add(new SavingsAccount(this, "SAVINGS"));
+				break;
+			}
+		}while (!option.equalsIgnoreCase("exit"));
+	}
+	
+	public void deposit() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		boolean confirm = false;
+		int i;
+		do {
+			try {
+				System.out.println("Enter amount to deposit: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to deposit into.");
+					return;
+				}
+				System.out.println("Which account would you like to deposit into?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transaction(acc, null, amount, note));
+				break;
+		}while(!confirm);
+	}
+	
+	public static boolean yesNoPrompt() {
+		String option;
+		do {
+			System.out.println("Y/N?");
+			option = input.next();
+		}while (!(option.equalsIgnoreCase("y") || option.equalsIgnoreCase("n")));
+		
+		if (option.equalsIgnoreCase("y"))
+			return true;
+		
+		return false;
 	}
 	
 	@Override

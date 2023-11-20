@@ -103,16 +103,16 @@ public class User {
 			System.out.println("Choose a 4-digit pin: ");
 			while (pin == 0) {
 				try {
-					pin = (int)input.nextByte();
+					pin = (int)input.nextInt();
 				}
 				catch (NumberFormatException e) {
-					System.out.println("Invalid number");
+					System.out.println("Invalid number number format");
 					input.nextLine();
 					pin = 0;
 					break;
 				}
 				catch (InputMismatchException e) {
-					System.out.println("Invalid number");
+					System.out.println("Invalid number number mismatch");
 					input.nextLine();
 					pin = 0;
 					continue;
@@ -138,7 +138,7 @@ public class User {
 				newUser.setName(firstLast[0], firstLast[1]);
 			}
 			else {
-				newUser.setName(firstAndLast, firstAndLast);
+				newUser.setName(firstAndLast, " ");
 			}
 			if (User.getUsers().add(newUser)) {
 				System.out.println("Account created.");
@@ -200,6 +200,42 @@ public class User {
 			}
 			if (confirm)
 				getTransactions().add(new Transaction(acc, null, amount, note));
+				break;
+		}while(!confirm);
+	}
+	
+	public void withdraw() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		boolean confirm = false;
+		int i;
+		do {
+			try {
+				System.out.println("Enter amount to withdraw: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to withdraw from.");
+					return;
+				}
+				System.out.println("Which account would you like to withdraw from?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transaction(null, acc, amount, note));
 				break;
 		}while(!confirm);
 	}

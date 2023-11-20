@@ -14,8 +14,7 @@ public class MainClass {
 			option = input();
 			
 			if (option.equalsIgnoreCase("new")) {
-				// create new account
-				System.out.println("create account");
+				User.createUser();
 			}
 			else if (!(option.length() == 4)) {
 				prompt(0);
@@ -51,6 +50,9 @@ public class MainClass {
 		
 		while (!option.equalsIgnoreCase("exit")) {
 			prompt(2);
+			for (Transaction t: currentUser.getTransactions()) {
+				t.validate();
+			}
 			option = input();
 			
 			switch (option) {
@@ -58,7 +60,7 @@ public class MainClass {
 				currentUser.deposit();//not done
 				break;
 			case "1":
-				// Withdraw
+				currentUser.withdraw();
 				break;
 			case "2":
 				// Make payment
@@ -116,7 +118,7 @@ public class MainClass {
 	}
 	
 	public static String input() {
-		return input.next();
+		return input.nextLine();
 	}
 	
 	public static boolean yesNoPrompt() {

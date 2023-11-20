@@ -36,6 +36,22 @@ public class Transaction {
 		status = "pending";
 	}
 	
+	public Account getTo() {
+		return to;
+	}
+	
+	public Account getFrom() {
+		return from;
+	}
+	
+	public double getAmount() {
+		return amount;
+	}
+	
+	public void setStatus(String s) {
+		status = s;
+	}
+	
 	@Override
 	public String toString() {
 		if (to == null) {
@@ -45,6 +61,30 @@ public class Transaction {
 			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
 		}
 		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
+	}
+	
+	public void deny(String reason) {
+		setStatus("Denied. Reason: " + reason);
+	}
+	
+	public void accept() {
+		from.withdraw(amount);
+		to.deposit(amount);
+		setStatus("Accepted.");
+	}
+	
+	public void validate() {
+		if (!(from instanceof canMakePayment)) {
+			deny("Savings account cannot make payment.");
+			return;
+		}
+		if (!(from.getBalance() >= getAmount())) {
+			deny("Sender has insufficient funds.");
+			return;
+		}
+		
+		accept();
+		
 	}
 
 }

@@ -49,6 +49,14 @@ public class Account {
 		return owner;
 	}
 	
+	public void deposit(double amount) {
+		setBalance(balance + amount);
+	}
+	
+	public void withdraw(double amount) {
+		setBalance(balance - amount);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("Id: %03d\tName: %s\tOwner: %s\tBalance: $%.2f\tCreated on %s", id, name, owner.getName(), balance, dateCreated);
@@ -67,7 +75,7 @@ class SavingsAccount extends Account {
 	}
 }
 
-class CheckingAccount extends Account {
+class CheckingAccount extends Account implements canMakePayment {
 	private CheckingAccount() {
 		
 	}
@@ -75,4 +83,9 @@ class CheckingAccount extends Account {
 	public CheckingAccount(User owner, String name) {
 		super(owner, name);
 	}
+	
+}
+
+interface canMakePayment {
+	
 }

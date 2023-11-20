@@ -317,6 +317,7 @@ public class User implements SavesData {
 		String note = null;
 		double amount = 0;
 		Account acc = null;
+		Account acc2 = null;
 		boolean confirm = false;
 		int i;
 		do {
@@ -328,11 +329,17 @@ public class User implements SavesData {
 					System.out.println("You have no accounts to pay with.");
 					return;
 				}
-				System.out.println("Which account would you like to withdraw from?");
+				
+				System.out.println("Which account would you like to pay from?");
 				for (i = 0; i < getAccounts().size(); i++) {
 					System.out.println(i + ") " + getAccounts().get(i).getName());
 				}
 				acc = getAccounts().get(input.nextInt());
+				System.out.println("Which account would you like to pay to?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc2 = getAccounts().get(input.nextInt());
 				input.nextLine();
 				System.out.println("Additional note:");
 				note = input.nextLine();
@@ -343,7 +350,7 @@ public class User implements SavesData {
 				input.nextLine();
 			}
 			if (confirm)
-				getTransactions().add(new Transaction(null, acc, amount, note));
+				getTransactions().add(new Transfer(acc2, acc, amount, note));
 				break;
 		}while(!confirm);
 	}

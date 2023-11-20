@@ -81,7 +81,7 @@ public class MainClass {
 				// Make payment - create bill?
 				break;
 			case "3":
-				//Transfer
+				currentUser.transfer();
 				break;
 			case "4":
 				for (Transaction t: currentUser.getTransactions()) {

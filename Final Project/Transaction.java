@@ -104,3 +104,24 @@ public class Transaction implements SavesData{
 	}
 
 }
+
+class Transfer extends Transaction {
+	public Transfer(Account to, Account from, double amount, String note) {
+		super(to, from, amount, note);
+	}
+	@Override
+	public void validate() {
+		if (getFrom() == null) {
+			accept();
+			return;
+		}
+		if (!(getFrom().getBalance() >= getAmount())) {
+			deny("Sending account has insufficient funds.");
+			return;
+		}
+		
+		accept();
+		return;
+		
+	}
+}

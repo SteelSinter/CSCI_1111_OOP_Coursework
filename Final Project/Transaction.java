@@ -1,7 +1,7 @@
 package bank;
 import java.util.*;
 
-public class Transaction {
+public class Transaction implements SavesData{
 	private double amount;
 	private Account to, from;
 	private String note, status, dateCreated;
@@ -61,6 +61,11 @@ public class Transaction {
 			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
 		}
 		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
+	}
+	
+	@Override
+	public String getData() {
+		return "DATA HERE";
 	}
 	
 	public void deny(String reason) {

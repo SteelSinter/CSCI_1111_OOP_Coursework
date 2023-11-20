@@ -1,7 +1,7 @@
 package bank;
 import java.util.*;
 
-public class Account {
+public class Account implements SavesData {
 	private int id;
 	private User owner;
 	private double balance;
@@ -60,6 +60,11 @@ public class Account {
 	@Override
 	public String toString() {
 		return String.format("Id: %03d\tName: %s\tOwner: %s\tBalance: $%.2f\tCreated on %s", id, name, owner.getName(), balance, dateCreated);
+	}
+	
+	@Override
+	public String getData() {
+		return "DATA HERE";
 	}
 }
 

@@ -8,7 +8,13 @@ public class MainClass {
 	public static void main(String[] args) {
 		String option;
 		
-		createDefaults();
+		//createDefaults();
+		try {
+			load();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
 		
 		do {
 			try {
@@ -171,12 +177,22 @@ public class MainClass {
 			System.out.println("File not found.");
 		}
 
-		try (Scanner read = new Scanner(file);
-		) {
+		
+	}
+	
+	public static void load() throws IOException{
+		File file = new File("SaveFile.txt");
+		String fileContents = new String();
+		
+		if (file.createNewFile())
+			System.out.println("Save file created.");
+		else
+			System.out.println("Existing save file found.");
+
+		try (Scanner read = new Scanner(file);) {
 			while (read.hasNext()) {
 				fileContents = fileContents.concat(read.next());
 			}
-			
 			System.out.println(fileContents);
 		}
 		catch (FileNotFoundException e) {
@@ -186,3 +202,6 @@ public class MainClass {
 
 }
 
+interface SavesData {
+	String getData();
+}

@@ -5,7 +5,7 @@ import java.util.*;
  * @author James Jesus
  *
  */
-public class User {
+public class User implements SavesData {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
 	private static ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<Account> accounts = new ArrayList<Account>();
@@ -255,7 +255,11 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
+		return String.format("ID: %03d\tPIN: %04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
 	}
 	
+	@Override
+	public String getData() {
+		return "DATA HERE";
+	}
 }

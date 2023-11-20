@@ -5,7 +5,7 @@ import java.util.*;
  * @author James Jesus
  *
  */
-public class User {
+public class User implements SavesData {
 	private static ArrayList<Short> userPins = new ArrayList<Short>();
 	private static ArrayList<User> users = new ArrayList<User>();
 	private ArrayList<Account> accounts = new ArrayList<Account>();
@@ -13,6 +13,7 @@ public class User {
 	private String first, last, dateCreated, dob;
 	private short pin;
 	private int id;
+	private static int numberOfUsers = 0;
 	
 	static Scanner input = new Scanner(System.in);
 	Date date = new Date();
@@ -26,7 +27,7 @@ public class User {
 		dateCreated = date.toString();
 		dob = "00/00/0000";
 		pin = (short)0000;
-		id = users.size();
+		id = numberOfUsers;
 		userPins.add(id, (short)0000);
 		users.add(id, this);
 	}
@@ -41,7 +42,7 @@ public class User {
 		dateCreated = date.toString();
 		this.dob = dateOfBirth;
 		this.pin = pin;
-		id = users.size() - 1;
+		id = numberOfUsers;
 		userPins.add(id, pin);
 	}
 	
@@ -151,6 +152,8 @@ public class User {
 	
 	public void createAccount() {
 		String option;
+		boolean accCreated = false;
+		Account newAcc;
 		do {
 			System.out.println("Account type: ");
 			System.out.println("0) checking");
@@ -159,13 +162,23 @@ public class User {
 			
 			switch (option) {
 			case "0":
-				getAccounts().add(new CheckingAccount(this, "CHECKING"));
+				if (getAccounts().add(newAcc = new CheckingAccount(this, "CHECKING"))) {
+					accCreated = true;
+					System.out.println("Account created");
+					newAcc.setId(Account.getNumberOfAccounts());
+					newAcc.setName(newAcc.getName() + newAcc.getId());
+				}
 				break;
 			case "1":
-				getAccounts().add(new SavingsAccount(this, "SAVINGS"));
+				if (getAccounts().add(newAcc = new SavingsAccount(this, "SAVINGS"))) {
+					accCreated = true;
+					System.out.println("Account created");
+					newAcc.setId(Account.getNumberOfAccounts());
+					newAcc.setName(newAcc.getName() + newAcc.getId());
+				}
 				break;
 			}
-		}while (!option.equalsIgnoreCase("exit"));
+		}while (!accCreated);
 	}
 	
 	public void deposit() {
@@ -240,6 +253,52 @@ public class User {
 		}while(!confirm);
 	}
 	
+	public void payment() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		boolean confirm = false;
+		int i;
+		int id;
+		do {
+			try {
+				System.out.println("Enter amount to pay: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				System.out.println("Enter recipient account id: ");
+				try {
+					id = input.nextInt();
+				}
+				catch (Exception e) {
+					System.out.println("Invalid id.");
+					return;
+				}
+				
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to pay with.");
+					return;
+				}
+				System.out.println("Which account would you like to pay with?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transaction(acc, acc, amount, note));
+				break;
+		}while(!confirm);
+	}
+
 	public static boolean yesNoPrompt() {
 		String option;
 		do {
@@ -253,9 +312,55 @@ public class User {
 		return false;
 	}
 	
-	@Override
-	public String toString() {
-		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
+	public void transfer() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		Account acc2 = null;
+		boolean confirm = false;
+		int i;
+		do {
+			try {
+				System.out.println("Enter amount to transfer: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to pay with.");
+					return;
+				}
+				
+				System.out.println("Which account would you like to pay from?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				System.out.println("Which account would you like to pay to?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc2 = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transfer(acc2, acc, amount, note));
+				break;
+		}while(!confirm);
 	}
 	
+	@Override
+	public String toString() {
+		return String.format("ID: %03d\tPIN: %04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
+  }
+	@Override
+	public String getData() {
+		return "TYPE |User| ID |" + id + "| FIRST |" + first + "| LAST |" + last + "| DOB |" + dob + "| DATE |" + dateCreated + "| PIN |" + pin;
+	}
 }

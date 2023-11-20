@@ -37,9 +37,7 @@ public class User {
 	 * @param dateOfBirth Date of birth in MM/DD/YYYY format.
 	 * @param pin Pin number for the account.
 	 */
-	public User(String first, String last, String dateOfBirth, short pin) {
-		this.first = first;
-		this.last = last;
+	public User(String dateOfBirth, short pin) {
 		dateCreated = date.toString();
 		this.dob = dateOfBirth;
 		this.pin = pin;
@@ -100,19 +98,24 @@ public class User {
 			System.out.println("Enter first and last name: ");
 			firstAndLast = input.nextLine();
 			System.out.println("Enter date of birth with forward slashes(MM/DD/YYYY): ");
-			dateOfBirth = input.next();
+			dateOfBirth = input.nextLine();
 			option = dateOfBirth;
 			System.out.println("Choose a 4-digit pin: ");
-			option = input.next();
 			while (pin == 0) {
 				try {
-					pin = Integer.parseInt(option);
+					pin = (int)input.nextInt();
 				}
 				catch (NumberFormatException e) {
-					System.out.println("Invalid number");
-					String s = input.nextLine();
+					System.out.println("Invalid number number format");
+					input.nextLine();
 					pin = 0;
 					break;
+				}
+				catch (InputMismatchException e) {
+					System.out.println("Invalid number number mismatch");
+					input.nextLine();
+					pin = 0;
+					continue;
 				}
 				for (Short s: User.getUserPins()) {
 					if (s == pin) {
@@ -123,17 +126,25 @@ public class User {
 				}
 				if (String.format("%04d", pin).length() != 4) {
 					System.out.println("Pin must be 4 digits");
-					input.nextLine();
 					pin = 0;
 					continue;
 				}
 				
 			}
 			input.nextLine();
-			String first = firstAndLast.substring(0, firstAndLast.indexOf(" "));
-			String last = firstAndLast.substring(firstAndLast.indexOf(" "), firstAndLast.length() - 1);
-			User.getUsers().add(new User(first, last, dateOfBirth, (short)pin));
-			System.out.println("Account created.");
+			User newUser = new User(dateOfBirth, (short)pin);
+			String[] firstLast = firstAndLast.split(" ");
+			if (firstLast.length == 2) {
+				newUser.setName(firstLast[0], firstLast[1]);
+			}
+			else {
+				newUser.setName(firstAndLast, " ");
+			}
+			if (User.getUsers().add(newUser)) {
+				System.out.println("Account created.");
+			}
+			else
+				System.out.println("One or more inputs were invalid. Account not created. Try again.");
 			break;
 		}while (!option.equalsIgnoreCase("exit"));
 	}
@@ -193,6 +204,42 @@ public class User {
 		}while(!confirm);
 	}
 	
+	public void withdraw() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		boolean confirm = false;
+		int i;
+		do {
+			try {
+				System.out.println("Enter amount to withdraw: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to withdraw from.");
+					return;
+				}
+				System.out.println("Which account would you like to withdraw from?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transaction(null, acc, amount, note));
+				break;
+		}while(!confirm);
+	}
+	
 	public static boolean yesNoPrompt() {
 		String option;
 		do {
@@ -208,7 +255,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s", id, pin, first, last, dob, dateCreated);
+		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
 	}
 	
 }

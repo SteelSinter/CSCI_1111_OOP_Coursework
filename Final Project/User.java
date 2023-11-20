@@ -312,6 +312,42 @@ public class User implements SavesData {
 		return false;
 	}
 	
+	public void transfer() {
+		String option;
+		String note = null;
+		double amount = 0;
+		Account acc = null;
+		boolean confirm = false;
+		int i;
+		do {
+			try {
+				System.out.println("Enter amount to transfer: ");
+				amount = input.nextDouble();
+				input.nextLine();
+				if (getAccounts().size() == 0) {
+					System.out.println("You have no accounts to pay with.");
+					return;
+				}
+				System.out.println("Which account would you like to withdraw from?");
+				for (i = 0; i < getAccounts().size(); i++) {
+					System.out.println(i + ") " + getAccounts().get(i).getName());
+				}
+				acc = getAccounts().get(input.nextInt());
+				input.nextLine();
+				System.out.println("Additional note:");
+				note = input.nextLine();
+				confirm = yesNoPrompt();
+			}
+			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
+				System.out.println("Invalid input.");
+				input.nextLine();
+			}
+			if (confirm)
+				getTransactions().add(new Transaction(null, acc, amount, note));
+				break;
+		}while(!confirm);
+	}
+	
 	@Override
 	public String toString() {
 		return String.format("ID: %03d\tPIN: %04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);

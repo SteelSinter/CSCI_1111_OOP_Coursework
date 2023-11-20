@@ -22,6 +22,7 @@ public class MainClass {
 			}
 			catch (IOException e) {
 				System.out.println("IOException");
+				e.printStackTrace();
 			}
 			prompt(1);
 			option = input();

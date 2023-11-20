@@ -2,7 +2,7 @@ package bank;
 import java.util.*;
 
 public class Transaction implements SavesData{
-	private double amount;
+	private double amount = 0.00;
 	private Account to, from;
 	private String note, status, dateCreated;
 	
@@ -12,8 +12,8 @@ public class Transaction implements SavesData{
 	 * Creates a test transaction using the default user.
 	 */
 	public Transaction() {
-		to = Account.accounts.get(0);
-		from = Account.accounts.get(0);
+		to = Account.getAccounts().get(0);
+		from = Account.getAccounts().get(0);
 		amount = 00.00;
 		note = "Test transaction.";
 		dateCreated = date.toString();
@@ -48,6 +48,10 @@ public class Transaction implements SavesData{
 		return amount;
 	}
 	
+	public String getStatus() {
+		return status;
+	}
+	
 	public void setStatus(String s) {
 		status = s;
 	}
@@ -55,32 +59,38 @@ public class Transaction implements SavesData{
 	@Override
 	public String toString() {
 		if (to == null) {
-			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\tCREATED: %s\tNOTE: %s", "Withdraw", from.getName(), amount, status, dateCreated, note);
+			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\tCREATED: %s\tNOTE: %s", "Withdraw", from.getName(), amount, status, dateCreated, note);
 		}
 		if (from == null) {
-			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
+			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
 		}
-		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
+		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
 	}
 	
 	@Override
 	public String getData() {
-		return "DATA HERE";
+		return "TYPE |Transaction| TO |" + to + "| FROM |" + from + "| AMOUNT |" + amount + "| STATUS |" + status + "| DATECREATED |" + dateCreated + "| NOTE |" + note;
 	}
 	
 	public void deny(String reason) {
-		setStatus("Denied. Reason: " + reason);
+		setStatus("Denied, reason: " + reason);
 	}
 	
 	public void accept() {
-		from.withdraw(amount);
-		to.deposit(amount);
-		setStatus("Accepted.");
+		if (from != null)
+			from.withdraw(amount);
+		if (to != null)
+			to.deposit(amount);
+		setStatus("Approved.");
 	}
 	
 	public void validate() {
+		if (from == null) {
+			accept();
+			return;
+		}
 		if (!(from instanceof canMakePayment)) {
-			deny("Savings account cannot make payment.");
+			deny("Account type cannot make payments or withdrawls.");
 			return;
 		}
 		if (!(from.getBalance() >= getAmount())) {
@@ -89,6 +99,7 @@ public class Transaction implements SavesData{
 		}
 		
 		accept();
+		return;
 		
 	}
 

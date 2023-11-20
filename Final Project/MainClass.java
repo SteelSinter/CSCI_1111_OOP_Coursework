@@ -8,7 +8,7 @@ public class MainClass {
 	public static void main(String[] args) {
 		String option;
 		
-		//createDefaults();
+		createDefaults();
 		try {
 			load();
 		}
@@ -64,7 +64,8 @@ public class MainClass {
 		while (!option.equalsIgnoreCase("exit")) {
 			prompt(2);
 			for (Transaction t: currentUser.getTransactions()) {
-				t.validate();
+				if (t.getStatus().equalsIgnoreCase("pending"))
+					t.validate();
 			}
 			option = input();
 			
@@ -76,7 +77,7 @@ public class MainClass {
 				currentUser.withdraw();
 				break;
 			case "2":
-				// Make payment
+				// Make payment - create bill?
 				break;
 			case "3":
 				//Transfer
@@ -169,7 +170,17 @@ public class MainClass {
 		try (PrintWriter write = new PrintWriter(file);
 		) {
 			for (User u: User.getUsers()) {
-				write.append(u.toString());
+				write.append(u.getData());
+				write.println();
+				
+				for (Account a: u.getAccounts()) {
+					write.append(a.getData());
+					write.println();
+				}
+				for (Transaction t: u.getTransactions()) {
+					write.append(t.getData());
+					write.println();
+				}
 			}
 			
 		}

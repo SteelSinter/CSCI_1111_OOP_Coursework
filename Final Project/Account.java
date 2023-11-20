@@ -1,7 +1,7 @@
 package bank;
 import java.util.*;
 
-public class Account implements SavesData, canMakePayment {
+public class Account implements SavesData {
 	private int id;
 	private User owner;
 	private double balance;

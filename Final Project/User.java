@@ -255,7 +255,7 @@ public class User {
 	
 	@Override
 	public String toString() {
-		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s", id, pin, first, last, dob, dateCreated);
+		return String.format("%03d\t%04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
 	}
 	
 }

@@ -1,5 +1,6 @@
 package bank;
 import java.util.*;
+import java.io.*;
 
 public class MainClass {
 	public static Scanner input = new Scanner(System.in);
@@ -10,6 +11,12 @@ public class MainClass {
 		createDefaults();
 		
 		do {
+			try {
+				save();
+			}
+			catch (IOException e) {
+				System.out.println("IOException");
+			}
 			prompt(1);
 			option = input();
 			
@@ -57,7 +64,7 @@ public class MainClass {
 			
 			switch (option) {
 			case "0":
-				currentUser.deposit();//not done
+				currentUser.deposit();
 				break;
 			case "1":
 				currentUser.withdraw();
@@ -87,6 +94,9 @@ public class MainClass {
 			case "6":
 				option = "exit";
 				break;
+			case "7":
+				currentUser.createAccount();// not done
+				break;
 			default:
 				System.out.println("Invalid option.");
 			}
@@ -110,7 +120,8 @@ public class MainClass {
 				+ "3) Transfer money\r"
 				+ "4) View transaction history\r"
 				+ "5) View accounts\r"
-				+ "6) Sign out");
+				+ "6) Sign out\r"
+				+ "7) Create account\r");
 			break;
 		default:
 			System.out.println("Invalid");
@@ -139,5 +150,39 @@ public class MainClass {
 		User.getUsers().add(new User());
 		User.getUsers().get(0).getAccounts().add(new Account());
 	}
+	
+	public static void save() throws IOException{
+		File file = new File("SaveFile.txt");
+		String fileContents = new String();
+
+		if (file.createNewFile())
+			System.out.println("Save file created.");
+		else
+			System.out.println("Existing save file found.");
+
+		try (PrintWriter write = new PrintWriter(file);
+		) {
+			for (User u: User.getUsers()) {
+				write.append(u.toString());
+			}
+			
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+
+		try (Scanner read = new Scanner(file);
+		) {
+			while (read.hasNext()) {
+				fileContents = fileContents.concat(read.next());
+			}
+			
+			System.out.println(fileContents);
+		}
+		catch (FileNotFoundException e) {
+			System.out.println("File not found.");
+		}
+	}
 
 }
+

@@ -298,7 +298,7 @@ public class User implements SavesData {
 				break;
 		}while(!confirm);
 	}
-	
+
 	public static boolean yesNoPrompt() {
 		String option;
 		do {
@@ -358,8 +358,7 @@ public class User implements SavesData {
 	@Override
 	public String toString() {
 		return String.format("ID: %03d\tPIN: %04d\t%s %s\t%s\tUser created on %s\t", id, pin, first, last, dob, dateCreated);
-	}
-	
+  }
 	@Override
 	public String getData() {
 		return "TYPE |User| ID |" + id + "| FIRST |" + first + "| LAST |" + last + "| DOB |" + dob + "| DATE |" + dateCreated + "| PIN |" + pin;

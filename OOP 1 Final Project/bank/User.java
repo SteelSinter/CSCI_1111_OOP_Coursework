@@ -1,5 +1,24 @@
 package bank;
 import java.util.*;
+
+/**
+ * Indicates if a class needs to save data.
+ * @author James Jesus
+ *
+ */
+interface SavesData {
+	/**
+	 * Delimiter to separate the data.
+	 */
+	String SEPARATOR = "_";
+	
+	/**
+	 * Turns the important data into a string to be saved and read.
+	 * @return Data for saving.
+	 */
+	String getData();
+}
+
 /**
  * Stores the data for a user.
  * @author James Jesus
@@ -33,8 +52,8 @@ public class User implements SavesData {
 	}
 	/**
 	 * Create a user with first and last name, date of birth, and pin.
-	 * @param first First name.
-	 * @param last Last name.
+	 * @param first Name.
+	 * @param last Name.
 	 * @param dateOfBirth Date of birth in MM/DD/YYYY format.
 	 * @param pin Pin number for the account.
 	 */
@@ -166,13 +185,13 @@ public class User implements SavesData {
 					System.out.println("Invalid number number format");
 					input.nextLine();
 					pin = 0;
-					break;
+					return;
 				}
 				catch (InputMismatchException e) {
 					System.out.println("Invalid number number mismatch");
 					input.nextLine();
 					pin = 0;
-					continue;
+					return;
 				}
 				for (Short s: User.getUserPins()) {
 					if (s == pin) {

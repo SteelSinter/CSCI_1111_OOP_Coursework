@@ -307,18 +307,3 @@ public class MainClass {
 	}
 
 }
-
-/**
- * Indicates if a class needs to save data.
- * @author James Jesus
- *
- */
-interface SavesData {
-	String SEPARATOR = "_";
-	
-	/**
-	 * Turns the important data into a string to be saved and read.
-	 * @return Data for saving.
-	 */
-	String getData();
-}

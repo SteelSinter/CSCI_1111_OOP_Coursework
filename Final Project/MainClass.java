@@ -2,10 +2,19 @@ package bank;
 import java.util.*;
 import java.io.*;
 
+/**
+ * Main class for navigating the menu.
+ * @author James Jesus
+ *
+ */
 public class MainClass {
 	public static Scanner input = new Scanner(System.in);
 	public static final String SEPARATOR = "_";
-
+	
+	/**
+	 * Main method.
+	 * @param args
+	 */
 	public static void main(String[] args) {
 		String option;
 		
@@ -47,6 +56,10 @@ public class MainClass {
 
 	}
 	
+	/**
+	 * Main menu where the user can do everything. Data is saved every time the main menu is displayed.
+	 * @param pin User to sign in.
+	 */
 	public static void mainMenu(short pin) {
 		String option = "";
 		User currentUser = null;
@@ -86,7 +99,7 @@ public class MainClass {
 				currentUser.withdraw();
 				break;
 			case "2":
-				// 
+				currentUser.createAccount();//fix
 				break;
 			case "3":
 				currentUser.transfer();
@@ -110,9 +123,6 @@ public class MainClass {
 			case "6":
 				option = "exit";
 				break;
-			case "7":
-				currentUser.createAccount();// not done
-				break;
 			default:
 				System.out.println("Invalid option.");
 			}
@@ -121,6 +131,10 @@ public class MainClass {
 		
 	}
 	
+	/**
+	 * Displays prompts for main menu.
+	 * @param p Prompt to display.
+	 */
 	public static void prompt(int p) {
 		switch (p) {
 		case 0:
@@ -132,22 +146,29 @@ public class MainClass {
 		case 2: System.out.print(
 				"0) Deposit\r"
 				+ "1) Withdraw\r"
-				+ "2) \r"
+				+ "2) Create account\r"
 				+ "3) Transfer money\r"
 				+ "4) View transaction history\r"
-				+ "5) View accounts\r"
-				+ "6) Sign out\r"
-				+ "7) Create account\r");
+				+ "5) View accounts and balances\r"
+				+ "6) Sign out\r");
 			break;
 		default:
 			System.out.println("Invalid");
 		}
 	}
 	
+	/**
+	 * Gets input from Scanner.
+	 * @return Input.
+	 */
 	public static String input() {
 		return input.nextLine();
 	}
 	
+	/**
+	 * Loops until 'y' or 'n' is entered.
+	 * @return True for 'y' false for 'n'.
+	 */
 	public static boolean yesNoPrompt() {
 		Scanner input = new Scanner(System.in);
 		String option;
@@ -162,11 +183,18 @@ public class MainClass {
 		return false;
 	}
 	
+	/**
+	 * Creates default accounts for testing.
+	 */
 	public static void createDefaults() {
 		User.getUsers().add(new User());
 		User.getUsers().get(0).getAccounts().add(new Account());
 	}
 	
+	/** 
+	 * Saves data as text.
+	 * @throws IOException
+	 */
 	public static void save() throws IOException{
 		File file = new File("SaveFile.txt");
 		String fileContents = new String();
@@ -199,6 +227,10 @@ public class MainClass {
 		
 	}
 	
+	/**
+	 * Loads data from file and creates objects with the data.
+	 * @throws IOException
+	 */
 	public static void load() throws IOException{
 		File file = new File("SaveFile.txt");
 		try (Scanner read = new Scanner(file);) {
@@ -209,7 +241,7 @@ public class MainClass {
 				String next = read.next();
 				
 				if (next.equalsIgnoreCase("useruseruser")) {
-					System.out.println("creating user");
+					//System.out.println("creating user");
 					
 					String dob = read.next();
 					
@@ -225,12 +257,12 @@ public class MainClass {
 					newUser.setDateCreated(dateCreated);
 					
 					if (User.getUsers().add(newUser)) {
-						System.out.println("user loaded.");
+						//System.out.println("user loaded.");
 					}
 				}
 				
 				if (read.hasNextLine() && next.equalsIgnoreCase("accountaccountaccount")) {
-					System.out.println("creating account");
+					//System.out.println("creating account");
 					
 					String name = read.next();
 					double balance = Double.parseDouble(read.next());
@@ -243,13 +275,13 @@ public class MainClass {
 					newAccount.setDateCreated(dateCreated0);
 					
 					if (newUser.getAccounts().add(newAccount)) {
-						System.out.println("account loaded.");
+						//System.out.println("account loaded.");
 					}
 					
 				}
 				
 				if (read.hasNextLine() && next.equalsIgnoreCase("transactiontransactiontransaction")) {
-					System.out.println("creating transaction");
+					//System.out.println("creating transaction");
 					
 					String to = read.next();
 					String from = read.next();
@@ -258,12 +290,12 @@ public class MainClass {
 					String status = read.next();
 					String dateCreated1 = read.nextLine();
 					
-					System.out.println(to + from + amount + note + status + dateCreated1);
+					//System.out.println(to + from + amount + note + status + dateCreated1);
 					
 					Transaction newTransaction = new StringTransaction(to, from, amount, note, status, dateCreated1);
 					
 					if (newUser.getTransactions().add(newTransaction)) {
-						System.out.println("transaction loaded.");
+						//System.out.println("transaction loaded.");
 					}
 				}
 				
@@ -276,7 +308,17 @@ public class MainClass {
 
 }
 
+/**
+ * Indicates if a class needs to save data.
+ * @author James Jesus
+ *
+ */
 interface SavesData {
 	String SEPARATOR = "_";
+	
+	/**
+	 * Turns the important data into a string to be saved and read.
+	 * @return Data for saving.
+	 */
 	String getData();
 }

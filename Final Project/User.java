@@ -46,56 +46,108 @@ public class User implements SavesData {
 		userPins.add(id, pin);
 	}
 	
-	public void setDateOfBirth(String dateOfBirth) {
-		dob = dateOfBirth;
+	/**
+	 * Sets the date of birth.
+	 * @param s String to set the date of birth to.
+	 */
+	public void setDateOfBirth(String s) {
+		dob = s;
 	}
 	
+	/**
+	 * Sets first and last name.
+	 * @param first First name.
+	 * @param last Last name.
+	 */
 	public void setName(String first, String last) {
 		this.first = first;
 		this.last = last;
 	}
 	
+	/**
+	 * Sets the pin.
+	 * @param pin Pin.
+	 */
 	public void setPin(short pin) {
 		this.pin = pin;
 		userPins.add(id, pin);
 	}
 	
+	/**
+	 * Sets the date created.
+	 * @param s Date created.
+	 */
 	public void setDateCreated(String s) {
 		dateCreated = s;
 	}
 	
+	/**
+	 * Gets the pin.
+	 * @return A 4 digit short.
+	 */
 	public short getPin() {
 		return pin;
 	}
 	
+	/**
+	 * Gets the id number.
+	 * @return An int id.
+	 */
 	public int getId() {
 		return id;
 	}
 	
+	/**
+	 * Gets the name.
+	 * @return First and last name.
+	 */
 	public String getName() {
 		return first + " " + last;
 	}
 	
+	/**
+	 * Gets the date of birth.
+	 * @return Date of birth String.
+	 */
 	public String getDateOfBirth() {
 		return dob;
 	}
 	
+	/**
+	 * 
+	 * @return ArrayList of accounts.
+	 */
 	public ArrayList<Account> getAccounts() {
 		return accounts;
 	}
 	
+	/**
+	 * 
+	 * @return ArrayList of transactions.
+	 */
 	public ArrayList<Transaction> getTransactions() {
 		return transactions;
 	}
 	
+	/**
+	 * 
+	 * @return ArrayList of users.
+	 */
 	public static ArrayList<User> getUsers() {
 		return users;
 	}
 	
+	/**
+	 * Used for choosing which account to use when signing in.
+	 * @return ArrayList of user pins.
+	 */
 	public static ArrayList<Short> getUserPins() {
 		return userPins;
 	}
 	
+	/**
+	 * Dialog prompts for creating a new User.
+	 */
 	public static void createUser() {
 		String option, firstAndLast, dateOfBirth;
 		int pin = 0;
@@ -154,6 +206,9 @@ public class User implements SavesData {
 		}while (!option.equalsIgnoreCase("exit"));
 	}
 	
+	/**
+	 * Dialog prompts for creating an Account.
+	 */
 	public void createAccount() {
 		String option;
 		boolean accCreated = false;
@@ -185,6 +240,9 @@ public class User implements SavesData {
 		}while (!accCreated);
 	}
 	
+	/**
+	 * Dialog prompts for creating a deposit.
+	 */
 	public void deposit() {
 		String option;
 		String note = null;
@@ -221,6 +279,9 @@ public class User implements SavesData {
 		}while(!confirm);
 	}
 	
+	/**
+	 * Dialog prompts for creating a withdrawal.
+	 */
 	public void withdraw() {
 		String option;
 		String note = null;
@@ -257,52 +318,10 @@ public class User implements SavesData {
 		}while(!confirm);
 	}
 	
-	public void payment() {
-		String option;
-		String note = null;
-		double amount = 0;
-		Account acc = null;
-		boolean confirm = false;
-		int i;
-		int id;
-		do {
-			try {
-				System.out.println("Enter amount to pay: ");
-				amount = input.nextDouble();
-				input.nextLine();
-				System.out.println("Enter recipient account id: ");
-				try {
-					id = input.nextInt();
-				}
-				catch (Exception e) {
-					System.out.println("Invalid id.");
-					return;
-				}
-				
-				if (getAccounts().size() == 0) {
-					System.out.println("You have no accounts to pay with.");
-					return;
-				}
-				System.out.println("Which account would you like to pay with?");
-				for (i = 0; i < getAccounts().size(); i++) {
-					System.out.println(i + ") " + getAccounts().get(i).getName());
-				}
-				acc = getAccounts().get(input.nextInt());
-				input.nextLine();
-				System.out.println("Additional note:");
-				note = input.nextLine();
-				confirm = yesNoPrompt();
-			}
-			catch (NumberFormatException | IndexOutOfBoundsException | InputMismatchException e) {
-				System.out.println("Invalid input.");
-				input.nextLine();
-			}
-			if (confirm)
-				getTransactions().add(new Transaction(acc, acc, amount, note));
-				break;
-		}while(!confirm);
-	}
-	
+	/**
+	 * Creates a loop until 'y' or 'n' is entered.
+	 * @return True if 'y' false if 'n'.
+	 */
 	public static boolean yesNoPrompt() {
 		String option;
 		do {
@@ -316,6 +335,9 @@ public class User implements SavesData {
 		return false;
 	}
 	
+	/**
+	 * Dialog prompts for transferring money.
+	 */
 	public void transfer() {
 		String option;
 		String note = null;

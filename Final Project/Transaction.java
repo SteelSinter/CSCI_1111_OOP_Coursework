@@ -1,6 +1,11 @@
 package bank;
 import java.util.*;
 
+/**
+ * A Transaction is used to send money from one Account to another. A Transaction needs to be validated before the money is transfered.
+ * @author James Jesus
+ *
+ */
 public class Transaction implements SavesData{
 	private double amount = 0.00;
 	private Account to, from;
@@ -36,22 +41,42 @@ public class Transaction implements SavesData{
 		status = "pending";
 	}
 	
+	/**
+	 * 
+	 * @return Account the payment will be made to.
+	 */
 	public Account getTo() {
 		return to;
 	}
 	
+	/**
+	 * 
+	 * @return Account the payment will be taken from.
+	 */
 	public Account getFrom() {
 		return from;
 	}
 	
+	/**
+	 * 
+	 * @return Amount the transaction was.
+	 */
 	public double getAmount() {
 		return amount;
 	}
 	
+	/**
+	 * 
+	 * @return Status of the transaction.
+	 */
 	public String getStatus() {
 		return status;
 	}
 	
+	/**
+	 * Sets the status of the transaction.
+	 * @param s Status.
+	 */
 	public void setStatus(String s) {
 		status = s;
 	}
@@ -71,7 +96,7 @@ public class Transaction implements SavesData{
 	public String getData() {
 		String to, from;
 		if (this.to == null) {
-			to = "Withdrawl";
+			to = "Withdrawal";
 		}
 		else {
 			to = this.to.getName();
@@ -86,10 +111,17 @@ public class Transaction implements SavesData{
 		return "TRANSACTIONTRANSACTIONTRANSACTION" + SEPARATOR + to + SEPARATOR + from + SEPARATOR + amount + SEPARATOR + note + SEPARATOR + status + SEPARATOR + dateCreated;
 	}
 	
+	/**
+	 * Denies the transaction.
+	 * @param reason Reason to attach to the status.
+	 */
 	public void deny(String reason) {
 		setStatus("Denied, reason: " + reason);
 	}
 	
+	/**
+	 * Accepts the transaction.
+	 */
 	public void accept() {
 		if (from != null)
 			from.withdraw(amount);
@@ -98,6 +130,10 @@ public class Transaction implements SavesData{
 		setStatus("Approved.");
 	}
 	
+	/**
+	 * Checks if the sending account has enough funds and can make payments then accepts or denies the transaction.
+	 * 
+	 */
 	public void validate() {
 		if (from == null) {
 			accept();
@@ -119,10 +155,26 @@ public class Transaction implements SavesData{
 
 }
 
+/**
+ * A transaction that is made between accounts attached to the same user.
+ * @author James Jesus
+ *
+ */
 class Transfer extends Transaction {
+	/**
+	 * Creates a transfer.
+	 * @param to Account to receive transfer.
+	 * @param from Account to send transfer.
+	 * @param amount Amount to send.
+	 * @param note Note to attach to the transfer.
+	 */
 	public Transfer(Account to, Account from, double amount, String note) {
 		super(to, from, amount, note);
 	}
+	
+	/**
+	 * Overrides the validation so that savings accounts can send money.
+	 */
 	@Override
 	public void validate() {
 		if (getFrom() == null) {
@@ -140,17 +192,22 @@ class Transfer extends Transaction {
 	}
 }
 
+/**
+ * Transaction that has data saved as Strings to make saving and loading easier.
+ * @author James Jesus
+ *
+ */
 class StringTransaction extends Transaction {
 	private String toAsString, fromAsString, statusAsString, dateCreatedAsString, noteAsString;
 	private double amountAsString;
 	
 	/**
-	 * 
-	 * @param to
-	 * @param from
-	 * @param amount
-	 * @param note
-	 * @param status
+	 * Creates a String representation of a transaction for easier saving and loading. A transaction cannot be made once it's been saved.
+	 * @param to Account that received payment.
+	 * @param from Account that made payment.
+	 * @param amount Amount sent.
+	 * @param note Note attached to transaction.
+	 * @param status Final status of transaction.
 	 * @param dateCreated
 	 */
 	public StringTransaction(String to, String from, double amount, String note, String status, String dateCreated) {

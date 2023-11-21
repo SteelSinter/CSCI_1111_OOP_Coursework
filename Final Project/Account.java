@@ -56,6 +56,10 @@ public class Account implements SavesData {
 		return balance;
 	}
 	
+	public void setDateCreated(String s) {
+		dateCreated = s;
+	}
+	
 	public String getName() {
 		return name;
 	}
@@ -82,17 +86,16 @@ public class Account implements SavesData {
 	
 	@Override
 	public String toString() {
-		return String.format("Id: %03d\tName: %s\t\tOwner: %s\tBalance: $%.2f\tCreated on %s", id, name, owner.getName(), balance, dateCreated);
+		return String.format("Name: %s\t\tOwner: %s\tBalance: $%.2f\tCreated on %s", name, owner.getName(), balance, dateCreated);
 	}
 	
 	@Override
 	public String getData() {
-		return "TYPE |Account| ID|" + id + "| OWNER |" + owner + "| BALANCE |" + balance + "| DATECREATED |" + dateCreated + "| NAME |" + name + "| NUMBEROFACCOUNTS |" + numberOfAccounts;
+		return "ACCOUNTACCOUNTACCOUNT" + SEPARATOR + name + SEPARATOR + balance + SEPARATOR + dateCreated;
 	}
 }
 
 class SavingsAccount extends Account {
-	private double monthlyInterestRate;
 	
 	private SavingsAccount() {
 		

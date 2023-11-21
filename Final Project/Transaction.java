@@ -12,8 +12,8 @@ public class Transaction implements SavesData{
 	 * Creates a test transaction using the default user.
 	 */
 	public Transaction() {
-		to = Account.getAccounts().get(0);
-		from = Account.getAccounts().get(0);
+		to = null;
+		from = null;
 		amount = 00.00;
 		note = "Test transaction.";
 		dateCreated = date.toString();
@@ -59,17 +59,31 @@ public class Transaction implements SavesData{
 	@Override
 	public String toString() {
 		if (to == null) {
-			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\tCREATED: %s\tNOTE: %s", "Withdraw", from.getName(), amount, status, dateCreated, note);
+			return String.format("TO: %s\t\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\tCREATED: %s\tNOTE: %s", "Withdraw", from.getName(), amount, status, dateCreated, note);
 		}
 		if (from == null) {
-			return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
+			return String.format("TO: %s\t\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), "Deposit", amount, status, dateCreated, note);
 		}
-		return String.format("TO: %s\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
+		return String.format("TO: %s\t\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", to.getName(), from.getName(), amount, status, dateCreated, note);
 	}
 	
 	@Override
 	public String getData() {
-		return "TYPE |Transaction| TO |" + to + "| FROM |" + from + "| AMOUNT |" + amount + "| STATUS |" + status + "| DATECREATED |" + dateCreated + "| NOTE |" + note;
+		String to, from;
+		if (this.to == null) {
+			to = "Withdrawl";
+		}
+		else {
+			to = this.to.getName();
+		}
+		
+		if (this.from == null) {
+			from = "Deposit";
+		}
+		else {
+			from = this.from.getName();
+		}
+		return "TRANSACTIONTRANSACTIONTRANSACTION" + SEPARATOR + to + SEPARATOR + from + SEPARATOR + amount + SEPARATOR + note + SEPARATOR + status + SEPARATOR + dateCreated;
 	}
 	
 	public void deny(String reason) {
@@ -123,5 +137,37 @@ class Transfer extends Transaction {
 		accept();
 		return;
 		
+	}
+}
+
+class StringTransaction extends Transaction {
+	private String toAsString, fromAsString, statusAsString, dateCreatedAsString, noteAsString;
+	private double amountAsString;
+	
+	/**
+	 * 
+	 * @param to
+	 * @param from
+	 * @param amount
+	 * @param note
+	 * @param status
+	 * @param dateCreated
+	 */
+	public StringTransaction(String to, String from, double amount, String note, String status, String dateCreated) {
+		toAsString = to;
+		fromAsString = from;
+		amountAsString = amount;
+		statusAsString = status;
+		dateCreatedAsString = dateCreated;
+		noteAsString = note;
+	}
+	
+	@Override
+	public String toString() {
+		return String.format("TO: %s\t\tFROM: %s\tAMOUNT: $%.2f\t\tSTATUS: %s\t CREATED: %s\tNOTE: %s", toAsString, fromAsString, amountAsString, statusAsString, dateCreatedAsString, noteAsString);
+	}
+	@Override
+	public String getData() {
+		return "TRANSACTIONTRANSACTIONTRANSACTION" + SEPARATOR + toAsString + SEPARATOR + fromAsString + SEPARATOR + amountAsString + SEPARATOR + noteAsString + SEPARATOR + statusAsString + SEPARATOR + dateCreatedAsString;
 	}
 }

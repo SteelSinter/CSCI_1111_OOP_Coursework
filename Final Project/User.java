@@ -60,6 +60,10 @@ public class User implements SavesData {
 		userPins.add(id, pin);
 	}
 	
+	public void setDateCreated(String s) {
+		dateCreated = s;
+	}
+	
 	public short getPin() {
 		return pin;
 	}
@@ -362,6 +366,6 @@ public class User implements SavesData {
 	
 	@Override
 	public String getData() {
-		return "TYPE |User| ID |" + id + "| FIRST |" + first + "| LAST |" + last + "| DOB |" + dob + "| DATE |" + dateCreated + "| PIN |" + pin;
+		return "USERUSERUSER" + SEPARATOR + dob + SEPARATOR + pin + SEPARATOR + first + SEPARATOR + last + SEPARATOR + dateCreated;
 	}
 }

@@ -4,12 +4,14 @@ import java.io.*;
 
 public class MainClass {
 	public static Scanner input = new Scanner(System.in);
+	public static final String SEPARATOR = "_";
 
 	public static void main(String[] args) {
 		String option;
 		
-		createDefaults();
+		//createDefaults();
 		try {
+			System.out.println("loading data");
 			load();
 		}
 		catch (IOException e) {
@@ -17,18 +19,17 @@ public class MainClass {
 		}
 		
 		do {
-			try {
-				save();
-			}
-			catch (IOException e) {
-				System.out.println("IOException");
-				e.printStackTrace();
-			}
 			prompt(1);
 			option = input();
 			
 			if (option.equalsIgnoreCase("new")) {
 				User.createUser();
+				try {
+					save();
+				}
+				catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 			else if (!(option.length() == 4)) {
 				prompt(0);
@@ -63,6 +64,13 @@ public class MainClass {
 		}
 		
 		while (!option.equalsIgnoreCase("exit")) {
+			try {
+				save();
+			}
+			catch (IOException e) {
+				System.out.println("IOException");
+				e.printStackTrace();
+			}
 			prompt(2);
 			for (Transaction t: currentUser.getTransactions()) {
 				if (t.getStatus().equalsIgnoreCase("pending"))
@@ -78,7 +86,7 @@ public class MainClass {
 				currentUser.withdraw();
 				break;
 			case "2":
-				// Make payment - create bill?
+				// 
 				break;
 			case "3":
 				currentUser.transfer();
@@ -119,12 +127,12 @@ public class MainClass {
 			System.out.println("Invalid number.");
 			break;
 		case 1:
-			System.out.println("Enter pin or 'new' to create a new user.");
+			System.out.println("Enter your pin to sign in or 'new' to create a new user.");
 			break;
-		case 2: System.out.println(
+		case 2: System.out.print(
 				"0) Deposit\r"
 				+ "1) Withdraw\r"
-				+ "2) Make payment\r"
+				+ "2) \r"
 				+ "3) Transfer money\r"
 				+ "4) View transaction history\r"
 				+ "5) View accounts\r"
@@ -163,10 +171,9 @@ public class MainClass {
 		File file = new File("SaveFile.txt");
 		String fileContents = new String();
 
-		if (file.createNewFile())
-			System.out.println("Save file created.");
-		else
-			System.out.println("Existing save file found.");
+		file.delete();
+		
+		file = new File("SaveFile.txt");
 
 		try (PrintWriter write = new PrintWriter(file);
 		) {
@@ -194,18 +201,73 @@ public class MainClass {
 	
 	public static void load() throws IOException{
 		File file = new File("SaveFile.txt");
-		String fileContents = new String();
-		
-		if (file.createNewFile())
-			System.out.println("Save file created.");
-		else
-			System.out.println("Existing save file found.");
-
 		try (Scanner read = new Scanner(file);) {
-			while (read.hasNext()) {
-				fileContents = fileContents.concat(read.next());
+			read.useDelimiter(SEPARATOR);
+			User newUser = null;
+			
+			while (read.hasNextLine()) {
+				String next = read.next();
+				
+				if (next.equalsIgnoreCase("useruseruser")) {
+					System.out.println("creating user");
+					
+					String dob = read.next();
+					
+					Short pin = read.nextShort();
+					String first = read.next();
+					String last = read.next();
+					String dateCreated = read.nextLine();
+					
+					//System.out.println(dob + pin + first + last + dateCreated);
+							
+					newUser = new User(dob, pin);
+					newUser.setName(first, last);
+					newUser.setDateCreated(dateCreated);
+					
+					if (User.getUsers().add(newUser)) {
+						System.out.println("user loaded.");
+					}
+				}
+				
+				if (read.hasNextLine() && next.equalsIgnoreCase("accountaccountaccount")) {
+					System.out.println("creating account");
+					
+					String name = read.next();
+					double balance = Double.parseDouble(read.next());
+					String dateCreated0 = read.nextLine();
+					
+					//System.out.println(name + balance + dateCreated0);
+					
+					Account newAccount = new Account(newUser, name);
+					newAccount.setBalance(balance);
+					newAccount.setDateCreated(dateCreated0);
+					
+					if (newUser.getAccounts().add(newAccount)) {
+						System.out.println("account loaded.");
+					}
+					
+				}
+				
+				if (read.hasNextLine() && next.equalsIgnoreCase("transactiontransactiontransaction")) {
+					System.out.println("creating transaction");
+					
+					String to = read.next();
+					String from = read.next();
+					double amount = Double.parseDouble(read.next());
+					String note = read.next();
+					String status = read.next();
+					String dateCreated1 = read.nextLine();
+					
+					System.out.println(to + from + amount + note + status + dateCreated1);
+					
+					Transaction newTransaction = new StringTransaction(to, from, amount, note, status, dateCreated1);
+					
+					if (newUser.getTransactions().add(newTransaction)) {
+						System.out.println("transaction loaded.");
+					}
+				}
+				
 			}
-			System.out.println(fileContents);
 		}
 		catch (FileNotFoundException e) {
 			System.out.println("File not found.");
@@ -215,5 +277,6 @@ public class MainClass {
 }
 
 interface SavesData {
+	String SEPARATOR = "_";
 	String getData();
 }
